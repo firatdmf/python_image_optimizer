@@ -1,4 +1,6 @@
 # Writer: Muhammed Firat Ozturk
+# To load the required pip packages run: "pip install -r .\requirements.txt" commend in your terminal
+
 
 # Image SEO tips:
 # #1 Rename your images, they should be descriptive
@@ -30,64 +32,10 @@ from PIL import Image, ImageOps
 # Below package is for copying files from one directory to another
 import shutil
 
-# Below is for converting png to jpg. (OpenCV) It actually does very other things like machine learning. But we will use it simply in here.
-import cv2
-
 # Below package is used for rounding numbers up
 import math
 
 
-# ------------------ Ignore below code, it is for my reference only. -----------------
-# state the path of the image(s)
-# image_path = os.getcwd()+"/images/"
-# state the name of the image
-# image_name = "1056.jpg"
-# write down the image destination
-# image_destination = image_path + image_name
-# Save the image in a variable
-# image = Image.open(image_destination)
-# Print out image information
-# print(image.format, #shows the file type of the image
-#        image.size, #shows the dimensions if the image in pixels, width x height
-#          image.mode, #shows the color model/system (rgb etc)
-#            os.stat(image_destination).st_size) #shows the size of the image in bytes
-# ------------------ Ignore above code, it is for my reference only. -----------------
-
-
-# You can resize the image to lower its size but I will not do that.
-# new_image = image.resize((500,469),resample=1) #There are 6 resample options: 0,1,2,3,4,5. See below
-# Image.NEAREST (0)
-# Image.LANCZOS (1)
-# Image.BILINEAR (2)
-# Image.BICUBIC (3)
-# Image.BOX (4)
-# Image.HAMMING (5)
-
-# Converting image to the jpeg format.
-# This also reduces the sizes of already jpeg files as well.
-# This function is not used.
-def image_to_jpeg(image_name, images_folder):
-    # read the file using the cv2 package
-    image = cv2.imread(images_folder + image_name)
-    # new file name
-    new_image_name = image_name.split(".")[0] + ".jpeg"
-    # new path string
-    new_image_path = images_folder + new_image_name
-    # Note with .jpg or .jpeg format, to maintain the highest quality, you must specify the quality value from [0..100] (default value is 94 _ same as the file itself). Simply do this:
-    cv2.imwrite(
-        # Path where to save the image
-        new_image_path,
-        # What image to save
-        image,
-        # Assigning the quality for jpeg image
-        # The number represents the quality from scale 0-100
-        [int(cv2.IMWRITE_JPEG_QUALITY), 30],
-    )
-    # If the image already created before, and we now changed it's name (extension), then delete the old one
-    if new_image_path != images_folder + image_name:
-        os.remove(images_folder + image_name)
-    # Return the file size and the new image name for reference
-    return math.ceil(os.path.getsize(new_image_path) / 1024), new_image_name
 
 
 # Webp image file format has almost 30% less size on disk as jpeg even though it provides the same quality. So it is a better choice for web
@@ -104,9 +52,16 @@ def image_change_format(image_name, image_folder, format):
     # Return the file size (in kb) and the new image name for reference
     return math.ceil(os.path.getsize(image_folder + new_image_name)/1024), new_image_name
 
-    # next time try below
-    # cv2.imwrite("myfile.webp", cv2image, [int(cv2.IMWRITE_WEBP_QUALITY), 20])
 
+
+# You can resize the image to lower its size but I will not do that.
+# new_image = image.resize((500,469),resample=1) #There are 6 resample options: 0,1,2,3,4,5. See below
+# Image.NEAREST (0)
+# Image.LANCZOS (1)
+# Image.BILINEAR (2)
+# Image.BICUBIC (3)
+# Image.BOX (4)
+# Image.HAMMING (5)
 
 # This resizes the image dimensions in pixels where the largest dimension (width or height) will not exceed dim_threshold (in pixels) provided
 def image_resize(image_destination, dim_treshold):
@@ -322,27 +277,6 @@ def optimize():
         print(f'below things are not copied')
         print(failed_to_optimize)
 
-        
-
-
-
-
-
-
-
-
 
 optimize()
 
-# def trial(image_path = os.getcwd()):
-#     # image_path += '\\images\\1404T-2.jpeg'
-#     # reduce_colors(image_path)
-#     raw_images_folder = "C:\\Users\\firat\\Desktop\\code\\karven\\frontend\\public\\CurtainFabricCodesPics\\"
-#     output_folder = ("C:\\Users\\firat\\Desktop\\code\\karven\\frontend\\public\\images_optimized\\")
-#     print(len(os.listdir(raw_images_folder)))
-#     print(len(os.listdir(output_folder)))
-#     failed_to_optimize = failed_to_optimize_images(raw_images_folder,output_folder)
-#     print(f'below things are not copied, there are {len(failed_to_optimize)} files')
-#     print(failed_to_optimize)
-
-# trial()
