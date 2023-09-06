@@ -1,5 +1,5 @@
 # Writer: Muhammed Firat Ozturk
-# To load the required pip packages run: "pip install -r .\requirements.txt" commend in your terminal
+# To load the required pip packages type: "pip install -r .\requirements.txt" command in your terminal in the python code directory (ideally with a python virtual environment)
 
 
 # Image SEO tips:
@@ -35,6 +35,8 @@ import shutil
 # Below package is used for rounding numbers up
 import math
 
+# Below is used to exit the code if any error happens (like not having an input file)
+import sys
 
 
 
@@ -49,7 +51,7 @@ def image_change_format(image_name, image_folder, format):
     # If the image already created before, and we now changed it's name (extension), then delete the old one
     if new_image_name != image_name:
         os.remove(image_folder + image_name)
-    # Return the file size (in kb) and the new image name for reference
+    # Return the file size (in kb) and the new image name for reference. Deleted by 1024 because 1024 bytes is equal to 1 kb. And getsize gives the output in bytes
     return math.ceil(os.path.getsize(image_folder + new_image_name)/1024), new_image_name
 
 
@@ -191,15 +193,26 @@ def optimize():
     input_folder = path + "\\input\\"
     # Now let's define where to save our optimized output images
     output_folder = path + "\\output\\"
+    thumbnail_folder = path + "\\output\\thumbnail\\"
 
-    # If the above folders do not already exist, then the application itself creates it
-    if(os.path.isdir('input')==False):
+    try:
+        if len(os.listdir('input')) == 0:
+            sys.exit('You have not provided any images in the input folder that I can optimize. Please add your images in the input folder')
+    # If the input folder does not exists
+    except(FileNotFoundError):
         os.mkdir(input_folder)
-        # Exit application with error message
-        return('Error: There were no input folder found \nPlease add your image files in the now created input folder')
-    # Creates the output folder
-    if(os.path.isdir('output')==False):
+        sys.exit('An input folder is now created for you. Please add files to the input folder to optimize')
+
+    # If the output_folder and thumbnail_folders do not already exists, add them. If the already exists, do not do anything.
+    try:
         os.mkdir(output_folder)
+    except(FileExistsError):
+        pass
+
+    try:
+        os.mkdir(thumbnail_folder)
+    except(FileExistsError):
+        pass
 
     # assign image names to the array raw_images
     input_image_names = os.listdir(input_folder)
@@ -269,7 +282,7 @@ def optimize():
 
         # --------- Operation 5 - Creating Thumbnail -----------
         # first input is the location of non-thumbnail image. Second is the destination where it will be saved (includes the file name too).
-        create_thumbnail(output_folder + output_image_name, output_folder+'/thumbnail/thumbnail_'+output_image_name)
+        create_thumbnail(output_folder + output_image_name, thumbnail_folder+output_image_name)
 
     # Below function returns an array
     failed_to_optimize = failed_to_optimize_images(input_folder,output_folder, image_format)
