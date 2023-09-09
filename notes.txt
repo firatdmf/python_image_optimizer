@@ -1,0 +1,3 @@
+deleted uncessary comments
+eliminated path concatenation, converted to pathlib and os module only
+used PurePath.with_suffix() to handle change of file extension to avoid errors
