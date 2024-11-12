@@ -1,0 +1,2 @@
+py -m vnev vir_env
+pip install -r "requirements.txt"
