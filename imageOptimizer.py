@@ -29,6 +29,7 @@ import shutil
 
 # Below package is used for rounding numbers up
 import math
+import pillow_avif
 
 # Below is used to exit the code if any error happens (like not having an already existing input file)
 # import sys
@@ -164,7 +165,8 @@ def copy_file(original_destination, copy_destination):
 
 
 def optimize(origin):
-    image_format = "webp"
+    # image_format = "webp"
+    image_format = "avif"
     # Let's get the current directory and store it in path variable
     path = pathlib.Path.cwd()
     print(path)
@@ -241,13 +243,15 @@ def optimize(origin):
 
         # If the optimized image exists but the thumbnail is not created for it, create the thumbnail
         if (
-            original_destination.suffix == ".webp"
+            # original_destination.suffix == ".avif"
+            original_destination.suffix == f".{image_format}"
             and os.path.isfile(thumbnail_destination) == False
         ):
             create_thumbnail(original_destination, thumbnail_destination)
             continue
         # if the optimized image exists and the thumbnail exists, do not do anything
-        elif original_destination.suffix == ".webp" and os.path.isfile(
+        # elif original_destination.suffix == ".avif" and os.path.isfile(
+        elif original_destination.suffix == f".{image_format}" and os.path.isfile(
             thumbnail_destination
         ):
             continue
@@ -285,7 +289,7 @@ def optimize(origin):
                 format=image_format,
             )
             print(
-                f"The file size after converting to webp has been reduced to: {file_size}"
+                f"The file size after converting to avif has been reduced to: {file_size}"
             )
 
         # ---- OPERATION 4 ------> COMPRESS IMAGE
